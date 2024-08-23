@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat Room</title>
+    <style>
+        #chatbox {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat Room</h1>
+
+    <!-- 显示聊天内容 -->
+    <div id="chatbox">
+        <?php include 'read_chat.php'; ?>
+    </div>
+
+    <!-- 聊天表单 -->
+    <form action="write_chat.php" method="post">
+        <input type="text" name="username" placeholder="Your name" required><br><br>
+        <textarea name="message" placeholder="Type your message here..." rows="4" cols="40" required></textarea><br><br>
+        <input type="submit" value="Send">
+    </form>
+
+    <!-- 自动刷新聊天内容 -->
+    <script>
+        setInterval(function() {
+            const chatbox = document.getElementById('chatbox');
+            fetch('read_chat.php')
+                .then(response => response.text())
+                .then(data => {
+                    chatbox.innerHTML = data;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                });
+        }, 500);  // 每0.5秒刷新一次
+    </script>
+</body>
+</html>
